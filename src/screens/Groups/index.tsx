@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function Groups() {
   return (
     <View style={styles.container}>
-      <Text>Groups</Text>
+      <Text>Groups olha so</Text>
     </View>
   );
 }
