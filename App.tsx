@@ -11,7 +11,7 @@ export default function App() {
 
   return (
   <ThemeProvider theme={theme}>
-{!fontsLoader ? <Groups/> : <Loading/>}
+{fontsLoader ? <Groups/> : <Loading/>}
   </ThemeProvider>
    
    )
