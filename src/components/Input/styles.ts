@@ -14,8 +14,4 @@ font-size: ${({theme})=>theme.FONT_SIZE.MD}px;
 
 border-radius: 6px;
 padding: 16px;
-
-&::placeholder{
-    font: ${({theme})=>theme.COLORS.WHITE};
-}
 `;
