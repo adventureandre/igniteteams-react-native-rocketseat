@@ -30,6 +30,6 @@ export const NumbersOfPlayers = styled.Text`
 ${({ theme }) => css`
 color: ${theme.COLORS.GRAY_200};
 font-family: ${theme.FONT_FAMILY.BOLD} ;
-font-size: ${theme.FONT_SIZE.SM}
+font-size: ${theme.FONT_SIZE.SM}px;
 ` }
 `;
