@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Container } from './styles';
 
-import { groupsGetAll } from 'src/storege/group/groupsGetAll';
+import { groupsGetAll } from '@storage/group/groupsGetAll';
 
 import { Header } from '@components/Header';
 import { Highlight } from '@components/Highlight';
