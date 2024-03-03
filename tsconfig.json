@@ -9,7 +9,7 @@
       "@screens/*": ["src/screens/*"],
       "@storage/*": ["src/storage/*"],
       "@theme/*": ["src/theme/*"],
-      "@utils/*": ["src/ultils/*"],
+      "@utils/*": ["src/utils/*"],
   }
 }
 }
