@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Alert, FlatList } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 import { Container, Form, HeaderList, NumbersOfPlayers } from "./styles";
 
@@ -11,11 +12,13 @@ import { Input } from "@components/Input";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
-import { useRoute } from "@react-navigation/native";
-import { AppError } from "@utils/AppError";
-import { playerAddBayGroup } from "@storage/player/playerAddByGroup";
-import { playerGetByGroup } from "@storage/player/playersGetByGroup";
 
+
+import { playerAddByGroup } from "@storage/player/playerAddByGroup";
+import { playerGetByGroupAndTeam } from "@storage/player/playersGetByGroupAndTeam";
+import { PlayerStoregeDTO } from "@storage/player/PlayerStoregeDTO";
+
+import { AppError } from "@utils/AppError";
 type RouteParams = {
     group: string
 }
@@ -23,7 +26,7 @@ type RouteParams = {
 export function Players() {
     const [newPlayerName, setNewPlayerName] = useState('');
     const [team, setTeam] = useState('Time A');
-    const [players, setPlayers] = useState([]);
+    const [players, setPlayers] = useState<PlayerStoregeDTO[]>([]);
 
     const route = useRoute();
 
@@ -39,9 +42,8 @@ export function Players() {
             team,
         }
         try {
-            await playerAddBayGroup(newPlayer, group);
-            const players = await playerGetByGroup(group);
-            console.log("players", players);
+            await playerAddByGroup(newPlayer, group);
+
             
 
         } catch (error) {
@@ -54,6 +56,17 @@ export function Players() {
             }
         }
 
+    }
+
+    async function fetchPlayersByTeam(){
+        try{
+            const playersByTeam = await playerGetByGroupAndTeam(group,team)
+            setPlayers(playersByTeam);
+        }catch(error){
+            console.log("error", error);
+            Alert.alert('Pessoas', 'Não foi possivel carregar as pessoas do time selecionado');
+            
+        }
     }
 
     return (
