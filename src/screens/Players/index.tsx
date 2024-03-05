@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 
 import { Container, Form, HeaderList, NumbersOfPlayers } from "./styles";
 
@@ -12,18 +12,49 @@ import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
 import { useRoute } from "@react-navigation/native";
+import { AppError } from "@utils/AppError";
+import { playerAddBayGroup } from "@storage/player/playerAddByGroup";
+import { playerGetByGroup } from "@storage/player/playersGetByGroup";
 
 type RouteParams = {
     group: string
 }
 
 export function Players() {
-    const [team, setTeam] = useState('Time A')
-    const [players, setPlayers] = useState([])
+    const [newPlayerName, setNewPlayerName] = useState('');
+    const [team, setTeam] = useState('Time A');
+    const [players, setPlayers] = useState([]);
 
-    const route =  useRoute();
+    const route = useRoute();
 
-    const {group} =  route.params as RouteParams
+    const { group } = route.params as RouteParams
+
+    async function handleAddPlayer() {
+        if (newPlayerName.trim().length == 0) {
+            return Alert.alert('Nova pessoa ', "Informe o nome da pessoa para adicionar.")
+        }
+
+        const newPlayer = {
+            name: newPlayerName,
+            team,
+        }
+        try {
+            await playerAddBayGroup(newPlayer, group);
+            const players = await playerGetByGroup(group);
+            console.log("players", players);
+            
+
+        } catch (error) {
+            if (error instanceof AppError) {
+                Alert.alert('Nova Pessoa', error.message);
+            } else {
+                console.log(error);
+                Alert.alert('Nova Pessoa', "Não foi possivel adicionar")
+
+            }
+        }
+
+    }
 
     return (
         <Container>
@@ -32,11 +63,13 @@ export function Players() {
                 subtitle="adicione a galera e separe os times" />
             <Form>
                 <Input
+                    onChangeText={setNewPlayerName}
                     placeholder="Nome da pessoa"
                     autoCorrect={false}
                 />
 
                 <ButtonIcon
+                    onPress={handleAddPlayer}
                     icon="add"
                 />
 
@@ -71,12 +104,12 @@ export function Players() {
                     />
                 )}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={[{paddingBottom:100},players.length === 0 &&{ flex:1}]}
+                contentContainerStyle={[{ paddingBottom: 100 }, players.length === 0 && { flex: 1 }]}
             />
 
             <Button
-            title="Remover Turma"
-            type="SECONDARY"
+                title="Remover Turma"
+                type="SECONDARY"
             />
 
         </Container>
