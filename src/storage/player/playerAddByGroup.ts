@@ -7,7 +7,7 @@ import { PlayerStoregeDTO } from "./PlayerStoregeDTO";
 import { playerGetByGroup } from "./playersGetByGroup";
 
 
-export async function playerAddBayGroup(newPlayer: PlayerStoregeDTO, group: string) {
+export async function playerAddByGroup(newPlayer: PlayerStoregeDTO, group: string) {
     try {
 
         const storedPlayer = await playerGetByGroup(group);
